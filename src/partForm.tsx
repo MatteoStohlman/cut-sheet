@@ -14,7 +14,7 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { useMap, useList } from "react-use";
 import Radio from "./Radio";
 import Checkbox from "./Checkbox";
-import Input from "./Input";
+import { OutlinedInput } from "./Input";
 import { useCallback } from "react";
 
 const useStyles = makeStyles(() => ({
@@ -29,7 +29,7 @@ const useStyles = makeStyles(() => ({
     color: "gray"
   },
   badge: {
-    marginRight: "10px",
+    marginRight: "15px",
     width: "70px"
   },
   success_bg: {
@@ -148,13 +148,13 @@ export const PartForm = () => {
       handleExpandedChange(formConfig[sectionIndex + 1].id, true);
     }, 500);
   };
-  const handleChange = (key, value) => {
+  const handleChange = (key: string, value: any) => {
     updateForm.set(key, value);
   };
   const generateSubtitle = (keyPrefix: string) => {
     return Object.keys(form)
       .filter(optionKey => optionKey.startsWith(keyPrefix + "_"))
-      .map(matchingKey => form[matchingKey])
+      .map((matchingKey: string) => form[matchingKey])
       .join(", ");
   };
   const createRadio = (label: string, id: string, options: string[]) => ({
@@ -163,7 +163,7 @@ export const PartForm = () => {
     name: id,
     options
   });
-  const createCheckbox = (label, id) => ({
+  const createCheckbox = (label: string, id: string) => ({
     type: "checkbox",
     label,
     name: id
@@ -307,6 +307,17 @@ export const PartForm = () => {
     },
     [updateUserInfo]
   );
+  const isFormComplete = useCallback(() => {
+    let fieldsToComplete =
+      3 + formConfig.reduce((sum, section) => sum + section.content.length, 0);
+    let completedFields = Object.keys(form).length;
+    console.log(
+      completedFields,
+      fieldsToComplete,
+      completedFields >= fieldsToComplete
+    );
+    return completedFields >= fieldsToComplete;
+  }, [formConfig, form]);
   return (
     <Box maxWidth={400}>
       <Box textAlign="center">
@@ -322,27 +333,27 @@ export const PartForm = () => {
           </span>
         </Typography>
       </Box>
-      <Box p="10px">
-        <Input
+      <Box>
+        <OutlinedInput
           id="name"
           inputType="name"
           value={userInfo.name}
           onChange={handleInputChange.bind(null, "name")}
         />
-        <Input
+        <OutlinedInput
           id="email"
           inputType="email"
           value={userInfo.email}
           onChange={handleInputChange.bind(null, "email")}
         />
-        <Input
+        <OutlinedInput
           id="phone"
           inputType="tel"
           value={userInfo.phone}
           onChange={handleInputChange.bind(null, "phone")}
         />
       </Box>
-      {formConfig.map(section => {
+      {formConfig.map((section: any) => {
         let incompleteCount =
           section.content.length - countCompletedInputs(section.id);
         return (
@@ -354,7 +365,7 @@ export const PartForm = () => {
             onExpandChange={handleExpandedChange.bind(null, section.id)}
             content={
               <Box>
-                {section.content.map(input => {
+                {section.content.map((input: any) => {
                   switch (input.type) {
                     case "radio":
                       return (
@@ -389,6 +400,18 @@ export const PartForm = () => {
           />
         );
       })}
+      <Box my="20px">
+        <Button
+          variant="contained"
+          color="secondary"
+          disabled={!isFormComplete()}
+          onClick={() => alert("done")}
+          fullWidth
+          size="large"
+        >
+          Submit Order
+        </Button>
+      </Box>
     </Box>
   );
 };

@@ -33,7 +33,7 @@ export const Radio = ({
       <FormControl>
         {label && <FormLabel>{label}</FormLabel>}
         <RadioGroup name={name} value={value} onChange={handleChange}>
-          {options.map(option => {
+          {options.map((option: string) => {
             return (
               <FormControlLabel
                 value={option}

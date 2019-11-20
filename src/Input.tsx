@@ -1,6 +1,9 @@
 import * as React from "react";
 import { TextField, InputAdornment } from "@material-ui/core";
-import { TextFieldProps } from "@material-ui/core/TextField";
+import {
+  TextFieldProps,
+  OutlinedTextFieldProps
+} from "@material-ui/core/TextField";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import EmailIcon from "@material-ui/icons/Email";
 import PhoneIcon from "@material-ui/icons/Phone";
@@ -18,7 +21,7 @@ export const Input = ({
   inputType = "name",
   onChange,
   ...props
-}: InputProps & Omit<TextFieldProps, "variant">) => {
+}: InputProps & TextFieldProps) => {
   const inputRef = React.useRef<HTMLInputElement>();
   const [isError, toggleError] = useToggle(false);
   function getAdornmentIcon() {
@@ -108,13 +111,11 @@ export const Input = ({
       placeholder={getPlaceholder()}
       error={isError}
       type={inputType}
-      style={{ margin: 8 }}
       fullWidth
       margin="normal"
       InputLabelProps={{
         shrink: true
       }}
-      variant="outlined"
       InputProps={{
         inputProps: { ref: inputRef },
         startAdornment: (
@@ -126,5 +127,7 @@ export const Input = ({
     />
   );
 };
-
+export const OutlinedInput = (props: InputProps & TextFieldProps) => (
+  <Input {...props} variant="outlined" />
+);
 export default Input;
