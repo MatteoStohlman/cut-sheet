@@ -9,7 +9,7 @@ var firebaseConfig = {
   appId: "1:977313781377:web:9164ffad0725fe14d41f80",
   measurementId: "G-J84W3TCHQN"
 };
-var fire = null;
+var fire:firebase.app.App;
 if (!firebase.apps.length) {
   fire = firebase.initializeApp(firebaseConfig);
 } else {
